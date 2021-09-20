@@ -1,9 +1,11 @@
-package com.example.mvvmrecipeappdemo
+package com.example.mvvmrecipeappdemo.presentation.ui
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.mvvmrecipeappdemo.Constants
+import com.example.mvvmrecipeappdemo.R
 import com.example.mvvmrecipeappdemo.repository.RecipeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

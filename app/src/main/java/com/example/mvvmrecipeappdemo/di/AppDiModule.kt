@@ -17,6 +17,10 @@ val dataDiModule = module {
     single<RecipeRepository> { RecipeRepositoryImpl(recipeService = get(), mapper = get()) }
 }
 
+val viewModelDiModule = module {
+
+}
+
 fun createRecipeService(): RecipeService {
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY

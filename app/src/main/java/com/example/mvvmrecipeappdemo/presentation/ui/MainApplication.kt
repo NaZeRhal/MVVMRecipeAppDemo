@@ -1,4 +1,4 @@
-package com.example.mvvmrecipeappdemo
+package com.example.mvvmrecipeappdemo.presentation.ui
 
 import android.app.Application
 import com.example.mvvmrecipeappdemo.di.dataDiModule
