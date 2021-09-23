@@ -1,12 +1,15 @@
 package com.example.mvvmrecipeappdemo.di
 
-import com.example.mvvmrecipeappdemo.Constants
+import com.example.mvvmrecipeappdemo.utils.Constants
 import com.example.mvvmrecipeappdemo.network.RecipeService
 import com.example.mvvmrecipeappdemo.network.model.RecipeDtoMapper
+import com.example.mvvmrecipeappdemo.presentation.ui.recipe.RecipeViewModel
+import com.example.mvvmrecipeappdemo.presentation.ui.recipelist.RecipeListViewModel
 import com.example.mvvmrecipeappdemo.repository.RecipeRepository
 import com.example.mvvmrecipeappdemo.repository.RecipeRepositoryImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,7 +21,8 @@ val dataDiModule = module {
 }
 
 val viewModelDiModule = module {
-
+    viewModel<RecipeViewModel> { RecipeViewModel(recipeRepository = get()) }
+    viewModel<RecipeListViewModel> { RecipeListViewModel(recipeRepository = get()) }
 }
 
 fun createRecipeService(): RecipeService {

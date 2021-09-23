@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 
-class RecipeFragment: Fragment() {
+class RecipeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,9 +17,7 @@ class RecipeFragment: Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                Column {
-                    Text(text = "RecipeFragment")
-                }
+                Text(text = "Hello")
             }
         }
     }

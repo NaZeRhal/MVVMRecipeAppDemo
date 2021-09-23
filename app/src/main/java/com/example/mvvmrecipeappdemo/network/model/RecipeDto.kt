@@ -10,7 +10,7 @@ data class RecipeDto(
     val id: Int? = null,
     val title: String? = null,
     val publisher: String? = null,
-    @SerializedName("feature_image")
+    @SerializedName("featured_image")
     val featureImage: String? = null,
     val rating: Int? = 0,
     @SerializedName("source_url")

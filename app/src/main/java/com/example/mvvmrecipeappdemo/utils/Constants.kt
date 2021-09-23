@@ -1,4 +1,4 @@
-package com.example.mvvmrecipeappdemo
+package com.example.mvvmrecipeappdemo.utils
 
 abstract class Constants {
 
