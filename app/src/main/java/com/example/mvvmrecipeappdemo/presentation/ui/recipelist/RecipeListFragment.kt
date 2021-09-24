@@ -25,7 +25,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.example.mvvmrecipeappdemo.extensions.onSurfaceColor
-import com.example.mvvmrecipeappdemo.extensions.paddingStartEnd
 import com.example.mvvmrecipeappdemo.extensions.surfaceColor
 import com.example.mvvmrecipeappdemo.presentation.components.FoodCategoryChip
 import com.example.mvvmrecipeappdemo.presentation.components.RecipeCard
@@ -41,7 +40,6 @@ class RecipeListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.i("DBG", "onCreateView: ")
         return ComposeView(requireContext()).apply {
             setContent {
                 val keyboardController = LocalSoftwareKeyboardController.current
@@ -79,11 +77,8 @@ class RecipeListFragment : Fragment() {
                                     },
                                     keyboardActions = KeyboardActions(
                                         onSearch = {
-                                            recipeListViewModel.newSearch(query)
+                                            recipeListViewModel.newSearch()
                                             keyboardController?.hide()
-                                        },
-                                        onGo = {
-                                            Log.i("DBG", "onCreateView: onGo=${query}")
                                         }
                                     ),
                                     textStyle = TextStyle(color = onSurfaceColor()),
@@ -94,7 +89,7 @@ class RecipeListFragment : Fragment() {
                             }
                             LazyRow(
                                 horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                modifier = paddingStartEnd(8, 8)
+                                modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
                             ) {
                                 for (category in getAllFoodCategories()) {
                                     item {
@@ -103,8 +98,13 @@ class RecipeListFragment : Fragment() {
                                             onExecuteSearch = {
                                                 Log.i("DBG", "onCreateView: change=${it}")
                                                 recipeListViewModel.onQueryChanged(it)
+                                                Log.i(
+                                                    "DBG",
+                                                    "onCreateView: changedQuery=${recipeListViewModel.query.value}"
+                                                )
+                                                recipeListViewModel.query.value
                                                 Log.i("DBG", "onCreateView: query=${it}")
-                                                recipeListViewModel.newSearch(query)
+                                                recipeListViewModel.newSearch()
                                             })
                                     }
                                 }

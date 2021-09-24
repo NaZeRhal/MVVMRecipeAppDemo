@@ -1,5 +1,6 @@
 package com.example.mvvmrecipeappdemo.presentation.ui.recipelist
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,17 +17,19 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository) : View
     val query = mutableStateOf("")
 
     init {
-        newSearch(query.value)
+        newSearch()
     }
 
-    fun newSearch(query: String) {
+    fun newSearch() {
         viewModelScope.launch {
+            Log.i("DBG", "newSearch: query=${query}")
             val result = recipeRepository.search(
                 token = TOKEN_KEY,
                 page = 1,
-                query = query
+                query = query.value
             )
             recipes.value = result
+            Log.i("DBG", "newSearch: result=${recipes.value}")
         }
     }
 
