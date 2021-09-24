@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mvvmrecipeappdemo.domain.model.Recipe
+import com.example.mvvmrecipeappdemo.extensions.smallShape
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
@@ -21,7 +22,7 @@ fun RecipeCard(
     onClick: () -> Unit
 ) {
     Card(
-        shape = MaterialTheme.shapes.small,
+        shape = smallShape(),
         modifier = Modifier
             .padding(
                 8.dp
