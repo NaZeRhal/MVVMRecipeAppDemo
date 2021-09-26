@@ -20,3 +20,6 @@ fun getAllFoodCategories(): List<FoodCategory> = FoodCategory.values().toList()
 
 fun getFoodCategory(value: String): FoodCategory? =
     getAllFoodCategories().firstOrNull { it.value == value }
+
+fun getCategoryIndex(category: FoodCategory?) =
+    category?.let { getAllFoodCategories().indexOf(it) } ?: 0

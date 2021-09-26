@@ -25,7 +25,7 @@ fun FoodCategoryChip(
         modifier = paddingEnd(8),
         elevation = 8.dp,
         shape = mediumShape(),
-        color = primaryColor()
+        color = if(isSelected) Color.LightGray else primaryColor()
     ) {
         Row(
             modifier = Modifier
