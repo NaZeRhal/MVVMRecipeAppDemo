@@ -56,8 +56,9 @@ fun RecipeCard(
                             .fillMaxWidth(0.75f)
                             .wrapContentWidth(align = Alignment.Start)
                             .alignByBaseline(),
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Center
+                        style = MaterialTheme.typography.h4,
+                        textAlign = TextAlign.Center,
+
                     )
                 }
                 recipe.rating?.let { rating ->
@@ -67,7 +68,7 @@ fun RecipeCard(
                             .fillMaxWidth(0.25f)
                             .wrapContentWidth(align = Alignment.End)
                             .alignByBaseline(),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.h5,
                         textAlign = TextAlign.Center
                     )
                 }

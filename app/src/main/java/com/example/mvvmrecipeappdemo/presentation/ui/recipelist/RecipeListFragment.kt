@@ -8,20 +8,18 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Scaffold
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.fragment.app.Fragment
-import com.example.mvvmrecipeappdemo.extensions.backgroundColor
-import com.example.mvvmrecipeappdemo.presentation.components.CircularProgressBar
-import com.example.mvvmrecipeappdemo.presentation.components.RecipeCard
-import com.example.mvvmrecipeappdemo.presentation.components.SearchAppBar
+import com.example.mvvmrecipeappdemo.extensions.surfaceColor
+import com.example.mvvmrecipeappdemo.presentation.components.*
 import com.example.mvvmrecipeappdemo.presentation.theme.AppTheme
 import com.example.mvvmrecipeappdemo.presentation.ui.MainApplication
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -55,23 +53,26 @@ class RecipeListFragment : Fragment() {
                 }
 
                 AppTheme(darkTheme = application.isDarkTheme.value) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = backgroundColor())
+                    Scaffold(
+                        topBar = {
+                            SearchAppBar(
+                                query = query,
+                                onQueryChanged = recipeListViewModel::onQueryChanged,
+                                onExecuteSearch = recipeListViewModel::newSearch,
+                                scrollToPosition = scrollToPosition,
+                                selectedCategory = selectedCategory,
+                                onSelectedCategoryChanged = recipeListViewModel::onSelectedCategoryChanged,
+                                keyboardController = keyboardController,
+                                onToggleTheme = { application.toggleTheme() }
+                            )
+                        },
+                        bottomBar = { AppBottomBar() },
+                        drawerContent = { AppNavDrawer() }
                     ) {
-                        SearchAppBar(
-                            query = query,
-                            onQueryChanged = recipeListViewModel::onQueryChanged,
-                            onExecuteSearch = recipeListViewModel::newSearch,
-                            scrollToPosition = scrollToPosition,
-                            selectedCategory = selectedCategory,
-                            onSelectedCategoryChanged = recipeListViewModel::onSelectedCategoryChanged,
-                            keyboardController = keyboardController,
-                            onToggleTheme = { application.toggleTheme() }
-                        )
                         Box(
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = surfaceColor())
                         ) {
                             LazyColumn(
                                 state = LazyListState(firstVisibleItemIndex = 0)

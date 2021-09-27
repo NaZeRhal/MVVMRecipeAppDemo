@@ -70,7 +70,7 @@ fun SearchAppBar(
                             keyboardController?.hide()
                         }
                     ),
-                    textStyle = TextStyle(color = onSurfaceColor()),
+                    textStyle = MaterialTheme.typography.button,
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = surfaceColor()
                     )
