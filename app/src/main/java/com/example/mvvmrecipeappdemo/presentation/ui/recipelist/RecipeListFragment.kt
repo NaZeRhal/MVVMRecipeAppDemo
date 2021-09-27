@@ -31,15 +31,15 @@ import com.example.mvvmrecipeappdemo.presentation.ui.MainApplication
 import com.example.mvvmrecipeappdemo.utils.Constants.Companion.PAGE_SIZE
 import com.example.mvvmrecipeappdemo.utils.SnackBarController
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class RecipeListFragment : Fragment() {
 
     private lateinit var application: MainApplication
     private val recipeListViewModel: RecipeListViewModel by viewModel()
-
-    //    private val snackBarController: SnackBarController by inject { parametersOf(lifecycleScope) }
-    private val snackBarController = SnackBarController(lifecycleScope)
+    private val snackBarController: SnackBarController by inject { parametersOf(lifecycleScope) }
 
     @ExperimentalFoundationApi
     @ExperimentalAnimationApi
@@ -75,7 +75,7 @@ class RecipeListFragment : Fragment() {
                                 query = query,
                                 onQueryChanged = recipeListViewModel::onQueryChanged,
                                 onExecuteSearch = {
-                                    recipeListViewModel.newSearch()
+                                    recipeListViewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent)
                                     if (recipes.isNotEmpty()) {
                                         snackBarController.getScope().launch {
                                             snackBarController.showSnackBar(
@@ -107,7 +107,7 @@ class RecipeListFragment : Fragment() {
                                 itemsIndexed(items = recipes) { index, recipe ->
                                     recipeListViewModel.onChangeRecipeScrollPosition(index)
                                     if ((index + 1) >= (page * PAGE_SIZE) && !isLoading) {
-                                        recipeListViewModel.nextPage()
+                                        recipeListViewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
                                     }
                                     RecipeCard(recipe = recipe, onClick = {})
                                 }

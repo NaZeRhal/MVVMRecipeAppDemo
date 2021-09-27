@@ -1,5 +1,6 @@
 package com.example.mvvmrecipeappdemo.presentation.ui.recipelist
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,42 +22,51 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository) : View
     private var recipeListScrollPosition = 0
 
     init {
-        newSearch()
+        onTriggerEvent(RecipeListEvent.NewSearchEvent)
     }
 
-    fun newSearch() {
+    fun onTriggerEvent(event: RecipeListEvent) {
         viewModelScope.launch {
-            isLoading.value = true
-            resetSearchState()
-            delay(1000)
-            val result = recipeRepository.search(
-                token = TOKEN_KEY,
-                page = page.value,
-                query = query.value
-            )
-            recipes.value = result
-            isLoading.value = false
+            try {
+                when (event) {
+                    is RecipeListEvent.NewSearchEvent -> newSearch()
+                    is RecipeListEvent.NextPageEvent -> nextPage()
+                }
+            } catch (e: Exception) {
+                Log.i("DBG", "onTriggerEvent: ${e.message}")
+            }
         }
     }
 
-    fun nextPage() {
-        viewModelScope.launch {
-            //prevent duplicate events
-            if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
-                scrollToPosition.value = recipeListScrollPosition - 1
-                isLoading.value = true
-                incrementPage()
-                delay(1000)
-                if (page.value > 1) {
-                    val result = recipeRepository.search(
-                        token = TOKEN_KEY,
-                        page = page.value,
-                        query = query.value
-                    )
-                    appendRecipes(result)
-                }
-                isLoading.value = false
+    private suspend fun newSearch() {
+        isLoading.value = true
+        resetSearchState()
+        delay(1000)
+        val result = recipeRepository.search(
+            token = TOKEN_KEY,
+            page = page.value,
+            query = query.value
+        )
+        recipes.value = result
+        isLoading.value = false
+    }
+
+    private suspend fun nextPage() {
+        //prevent duplicate events
+        if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
+            scrollToPosition.value = recipeListScrollPosition - 1
+            isLoading.value = true
+            incrementPage()
+            delay(1000)
+            if (page.value > 1) {
+                val result = recipeRepository.search(
+                    token = TOKEN_KEY,
+                    page = page.value,
+                    query = query.value
+                )
+                appendRecipes(result)
             }
+            isLoading.value = false
         }
     }
 
