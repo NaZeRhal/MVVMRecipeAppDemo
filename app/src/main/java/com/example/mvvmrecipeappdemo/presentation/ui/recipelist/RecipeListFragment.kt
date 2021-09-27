@@ -13,21 +13,32 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.mvvmrecipeappdemo.extensions.surfaceColor
-import com.example.mvvmrecipeappdemo.presentation.components.*
+import com.example.mvvmrecipeappdemo.presentation.components.CircularProgressBar
+import com.example.mvvmrecipeappdemo.presentation.components.RecipeCard
+import com.example.mvvmrecipeappdemo.presentation.components.SearchAppBar
+import com.example.mvvmrecipeappdemo.presentation.components.snackbars.DefaultSnackBar
 import com.example.mvvmrecipeappdemo.presentation.theme.AppTheme
 import com.example.mvvmrecipeappdemo.presentation.ui.MainApplication
+import com.example.mvvmrecipeappdemo.utils.SnackBarController
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class RecipeListFragment : Fragment() {
 
-    private val recipeListViewModel: RecipeListViewModel by viewModel()
     private lateinit var application: MainApplication
+    private val recipeListViewModel: RecipeListViewModel by viewModel()
+
+    //    private val snackBarController: SnackBarController by inject { parametersOf(lifecycleScope) }
+    private val snackBarController = SnackBarController(lifecycleScope)
 
     @ExperimentalFoundationApi
     @ExperimentalAnimationApi
@@ -52,13 +63,31 @@ class RecipeListFragment : Fragment() {
                     if (index >= 1) index - 1 else 0
                 }
 
+                val scaffoldState = rememberScaffoldState()
+
                 AppTheme(darkTheme = application.isDarkTheme.value) {
                     Scaffold(
                         topBar = {
                             SearchAppBar(
                                 query = query,
                                 onQueryChanged = recipeListViewModel::onQueryChanged,
-                                onExecuteSearch = recipeListViewModel::newSearch,
+                                onExecuteSearch = {
+                                    recipeListViewModel.newSearch()
+                                    if (recipes.isNotEmpty()) {
+                                        snackBarController.getScope().launch {
+                                            snackBarController.showSnackBar(
+                                                scaffoldState = scaffoldState,
+                                                message = "Found ${recipes.size} recipes",
+                                                actionLabel = "Dismiss"
+                                            )
+                                        }
+//                                        snackBarController.showSnackBar(
+//                                            scaffoldState = scaffoldState,
+//                                            message = "Found ${recipes.size} recipes",
+//                                            actionLabel = "Dismiss"
+//                                        )
+                                    }
+                                },
                                 scrollToPosition = scrollToPosition,
                                 selectedCategory = selectedCategory,
                                 onSelectedCategoryChanged = recipeListViewModel::onSelectedCategoryChanged,
@@ -66,8 +95,8 @@ class RecipeListFragment : Fragment() {
                                 onToggleTheme = { application.toggleTheme() }
                             )
                         },
-                        bottomBar = { AppBottomBar() },
-                        drawerContent = { AppNavDrawer() }
+                        scaffoldState = scaffoldState,
+                        snackbarHost = { scaffoldState.snackbarHostState }
                     ) {
                         Box(
                             modifier = Modifier
@@ -82,6 +111,13 @@ class RecipeListFragment : Fragment() {
                                 }
                             }
                             CircularProgressBar(isDisplayed = isLoading)
+                            DefaultSnackBar(
+                                snackBarHostState = scaffoldState.snackbarHostState,
+                                onDismiss = {
+                                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                                },
+                                modifier = Modifier.align(Alignment.BottomCenter)
+                            )
                         }
                     }
                 }

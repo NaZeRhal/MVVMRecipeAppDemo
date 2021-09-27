@@ -3,6 +3,7 @@ package com.example.mvvmrecipeappdemo.presentation.ui
 import android.app.Application
 import androidx.compose.runtime.mutableStateOf
 import com.example.mvvmrecipeappdemo.di.dataDiModule
+import com.example.mvvmrecipeappdemo.di.uiDiModule
 import com.example.mvvmrecipeappdemo.di.viewModelDiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -18,7 +19,7 @@ class MainApplication : Application() {
         startKoin {
             androidLogger(Level.NONE)
             androidContext(this@MainApplication)
-            modules(listOf(dataDiModule, viewModelDiModule))
+            modules(listOf(dataDiModule, viewModelDiModule, uiDiModule))
         }
     }
 

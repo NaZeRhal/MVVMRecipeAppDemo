@@ -13,12 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.mvvmrecipeappdemo.extensions.onPrimaryColor
 import com.example.mvvmrecipeappdemo.extensions.onSurfaceColor
 import com.example.mvvmrecipeappdemo.extensions.surfaceColor
 import com.example.mvvmrecipeappdemo.presentation.ui.recipelist.FoodCategory
@@ -70,8 +74,13 @@ fun SearchAppBar(
                             keyboardController?.hide()
                         }
                     ),
-                    textStyle = MaterialTheme.typography.button,
+                    textStyle = TextStyle(
+                        color = onSurfaceColor(),
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 15.sp
+                    ),
                     colors = TextFieldDefaults.textFieldColors(
+                        textColor = Color.Black,
                         backgroundColor = surfaceColor()
                     )
                 )

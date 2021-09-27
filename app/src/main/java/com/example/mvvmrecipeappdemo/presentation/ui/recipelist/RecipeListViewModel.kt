@@ -1,6 +1,5 @@
 package com.example.mvvmrecipeappdemo.presentation.ui.recipelist
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,12 +11,9 @@ import kotlinx.coroutines.launch
 
 class RecipeListViewModel(private val recipeRepository: RecipeRepository) : ViewModel() {
 
-    val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
-
+    val recipes = mutableStateOf<List<Recipe>>(listOf())
     val query = mutableStateOf("")
-
     val selectedCategory = mutableStateOf<FoodCategory?>(null)
-
     val isLoading = mutableStateOf(false)
 
     init {

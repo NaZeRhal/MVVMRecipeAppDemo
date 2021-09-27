@@ -2,12 +2,13 @@ package com.example.mvvmrecipeappdemo.di
 
 import com.example.mvvmrecipeappdemo.network.RecipeService
 import com.example.mvvmrecipeappdemo.network.model.RecipeDtoMapper
-import com.example.mvvmrecipeappdemo.presentation.ui.MainApplication
 import com.example.mvvmrecipeappdemo.presentation.ui.recipe.RecipeViewModel
 import com.example.mvvmrecipeappdemo.presentation.ui.recipelist.RecipeListViewModel
 import com.example.mvvmrecipeappdemo.repository.RecipeRepository
 import com.example.mvvmrecipeappdemo.repository.RecipeRepositoryImpl
 import com.example.mvvmrecipeappdemo.utils.Constants
+import com.example.mvvmrecipeappdemo.utils.SnackBarController
+import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.viewmodel.dsl.viewModel
@@ -24,6 +25,10 @@ val dataDiModule = module {
 val viewModelDiModule = module {
     viewModel<RecipeViewModel> { RecipeViewModel(recipeRepository = get()) }
     viewModel<RecipeListViewModel> { RecipeListViewModel(recipeRepository = get()) }
+}
+
+val uiDiModule = module {
+    factory<SnackBarController> { (scope: CoroutineScope) -> SnackBarController(scope = scope) }
 }
 
 fun createRecipeService(): RecipeService {
