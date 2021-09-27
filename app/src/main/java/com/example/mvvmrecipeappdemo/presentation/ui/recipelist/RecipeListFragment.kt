@@ -28,6 +28,7 @@ import com.example.mvvmrecipeappdemo.presentation.components.SearchAppBar
 import com.example.mvvmrecipeappdemo.presentation.components.snackbars.DefaultSnackBar
 import com.example.mvvmrecipeappdemo.presentation.theme.AppTheme
 import com.example.mvvmrecipeappdemo.presentation.ui.MainApplication
+import com.example.mvvmrecipeappdemo.utils.Constants.Companion.PAGE_SIZE
 import com.example.mvvmrecipeappdemo.utils.SnackBarController
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -57,8 +58,10 @@ class RecipeListFragment : Fragment() {
                 val selectedCategory = recipeListViewModel.selectedCategory.value
                 val isLoading = recipeListViewModel.isLoading.value
                 val keyboardController = LocalSoftwareKeyboardController.current
+                val page = recipeListViewModel.page.value
+                val scrollListToPosition = recipeListViewModel.scrollToPosition.value
 
-                val scrollToPosition by lazy {
+                val scrollToChipsPosition by lazy {
                     val index = getCategoryIndex(selectedCategory)
                     if (index >= 1) index - 1 else 0
                 }
@@ -77,18 +80,13 @@ class RecipeListFragment : Fragment() {
                                         snackBarController.getScope().launch {
                                             snackBarController.showSnackBar(
                                                 scaffoldState = scaffoldState,
-                                                message = "Found ${recipes.size} recipes",
+                                                message = "Found ${recipeListViewModel.selectedCategory.value} recipes",
                                                 actionLabel = "Dismiss"
                                             )
                                         }
-//                                        snackBarController.showSnackBar(
-//                                            scaffoldState = scaffoldState,
-//                                            message = "Found ${recipes.size} recipes",
-//                                            actionLabel = "Dismiss"
-//                                        )
                                     }
                                 },
-                                scrollToPosition = scrollToPosition,
+                                scrollToPosition = scrollToChipsPosition,
                                 selectedCategory = selectedCategory,
                                 onSelectedCategoryChanged = recipeListViewModel::onSelectedCategoryChanged,
                                 keyboardController = keyboardController,
@@ -104,9 +102,13 @@ class RecipeListFragment : Fragment() {
                                 .background(color = surfaceColor())
                         ) {
                             LazyColumn(
-                                state = LazyListState(firstVisibleItemIndex = 0)
+                                state = LazyListState(firstVisibleItemIndex = scrollListToPosition)
                             ) {
                                 itemsIndexed(items = recipes) { index, recipe ->
+                                    recipeListViewModel.onChangeRecipeScrollPosition(index)
+                                    if ((index + 1) >= (page * PAGE_SIZE) && !isLoading) {
+                                        recipeListViewModel.nextPage()
+                                    }
                                     RecipeCard(recipe = recipe, onClick = {})
                                 }
                             }
