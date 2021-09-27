@@ -9,10 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.mvvmrecipeappdemo.extensions.mediumShape
-import com.example.mvvmrecipeappdemo.extensions.padding
-import com.example.mvvmrecipeappdemo.extensions.paddingEnd
-import com.example.mvvmrecipeappdemo.extensions.primaryColor
+import com.example.mvvmrecipeappdemo.extensions.*
 
 @Composable
 fun FoodCategoryChip(
@@ -25,7 +22,7 @@ fun FoodCategoryChip(
         modifier = paddingEnd(8),
         elevation = 8.dp,
         shape = mediumShape(),
-        color = if(isSelected) Color.LightGray else primaryColor()
+        color = if(isSelected) secondaryColor() else primaryColor()
     ) {
         Row(
             modifier = Modifier
@@ -40,7 +37,7 @@ fun FoodCategoryChip(
             Text(
                 text = category,
                 style = MaterialTheme.typography.body2,
-                color = Color.White,
+                color = onPrimaryColor(),
                 modifier = padding(8)
             )
         }

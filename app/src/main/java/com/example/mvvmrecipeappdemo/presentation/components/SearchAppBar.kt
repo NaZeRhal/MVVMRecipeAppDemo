@@ -7,17 +7,18 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.mvvmrecipeappdemo.extensions.onSurfaceColor
 import com.example.mvvmrecipeappdemo.extensions.surfaceColor
 import com.example.mvvmrecipeappdemo.presentation.ui.recipelist.FoodCategory
@@ -32,12 +33,13 @@ fun SearchAppBar(
     scrollToPosition: Int,
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
+    onToggleTheme: () -> Unit,
     keyboardController: SoftwareKeyboardController?,
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         elevation = 8.dp,
-        color = Color.White
+        color = surfaceColor()
     ) {
         Column {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -73,6 +75,21 @@ fun SearchAppBar(
                         backgroundColor = surfaceColor()
                     )
                 )
+                ConstraintLayout(
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                ) {
+                    val menu = createRef()
+                    IconButton(
+                        onClick = onToggleTheme,
+                        modifier = Modifier.constrainAs(menu) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                    ) {
+                        Icon(Icons.Filled.MoreVert, contentDescription = "menu icon")
+                    }
+                }
             }
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -97,6 +114,5 @@ fun SearchAppBar(
                 }
             }
         }
-
     }
 }

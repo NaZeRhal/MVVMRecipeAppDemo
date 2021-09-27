@@ -1,12 +1,13 @@
 package com.example.mvvmrecipeappdemo.di
 
-import com.example.mvvmrecipeappdemo.utils.Constants
 import com.example.mvvmrecipeappdemo.network.RecipeService
 import com.example.mvvmrecipeappdemo.network.model.RecipeDtoMapper
+import com.example.mvvmrecipeappdemo.presentation.ui.MainApplication
 import com.example.mvvmrecipeappdemo.presentation.ui.recipe.RecipeViewModel
 import com.example.mvvmrecipeappdemo.presentation.ui.recipelist.RecipeListViewModel
 import com.example.mvvmrecipeappdemo.repository.RecipeRepository
 import com.example.mvvmrecipeappdemo.repository.RecipeRepositoryImpl
+import com.example.mvvmrecipeappdemo.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.viewmodel.dsl.viewModel

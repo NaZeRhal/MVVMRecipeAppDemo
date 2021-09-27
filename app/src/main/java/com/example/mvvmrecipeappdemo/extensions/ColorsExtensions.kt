@@ -24,3 +24,6 @@ fun onSurfaceColor() = MaterialTheme.colors.onSurface
 @Composable
 fun errorColor() = MaterialTheme.colors.error
 
+@Composable
+fun backgroundColor() = MaterialTheme.colors.background
+
