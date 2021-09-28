@@ -1,5 +1,6 @@
 package com.example.mvvmrecipeappdemo.di
 
+import androidx.lifecycle.SavedStateHandle
 import com.example.mvvmrecipeappdemo.network.RecipeService
 import com.example.mvvmrecipeappdemo.network.model.RecipeDtoMapper
 import com.example.mvvmrecipeappdemo.presentation.ui.recipe.RecipeViewModel
@@ -23,8 +24,15 @@ val dataDiModule = module {
 }
 
 val viewModelDiModule = module {
+    single<SavedStateHandle> { SavedStateHandle() }
+
     viewModel<RecipeViewModel> { RecipeViewModel(recipeRepository = get()) }
-    viewModel<RecipeListViewModel> { RecipeListViewModel(recipeRepository = get()) }
+    viewModel<RecipeListViewModel> {
+        RecipeListViewModel(
+            recipeRepository = get(),
+            savedStateHandle = get()
+        )
+    }
 }
 
 val uiDiModule = module {
