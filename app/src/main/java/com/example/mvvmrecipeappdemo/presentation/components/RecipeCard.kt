@@ -36,7 +36,7 @@ fun RecipeCard(
             recipe.featureImage?.let { url ->
                 GlideImage(
                     imageModel = url,
-                    contentDescription = "placeholder",
+                    contentDescription = "recipe image",
                     modifier = Modifier
                         .fillMaxWidth()
                         .requiredHeight(225.dp),

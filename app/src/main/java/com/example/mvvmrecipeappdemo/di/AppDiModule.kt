@@ -26,7 +26,12 @@ val dataDiModule = module {
 val viewModelDiModule = module {
     single<SavedStateHandle> { SavedStateHandle() }
 
-    viewModel<RecipeViewModel> { RecipeViewModel(recipeRepository = get()) }
+    viewModel<RecipeViewModel> {
+        RecipeViewModel(
+            recipeRepository = get(),
+            savedStateHandle = get()
+        )
+    }
     viewModel<RecipeListViewModel> {
         RecipeListViewModel(
             recipeRepository = get(),

@@ -11,5 +11,8 @@ abstract class Constants {
         const val STATE_KEY_QUERY = "recipe.state.query.key"
         const val STATE_KEY_LIST_POSITION = "recipe.state.list.position.key"
         const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.list.selected.category.key"
+        const val STATE_KEY_RECIPE_ID = "recipe.state.recipe.id"
+
+        const val RECIPE_ID_KEY = "recipe.id.key"
     }
 }
